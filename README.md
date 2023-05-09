@@ -13,4 +13,4 @@ Install ONLY `shakespeareanize.py` and run it using `python3 shakespeareanize.py
 
 ## Authors
 
-![Nexachromic](https://github.com/Nexachromic)
+-[Nexachromic](https://github.com/Nexachromic)
