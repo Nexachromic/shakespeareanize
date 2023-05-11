@@ -1,7 +1,7 @@
 # Shakespeareanize
 A python script to convert normal English to Shakespearean English!
 
-## Usage
+## Usage - Python
 
 Python must be installed to run this script.
 
@@ -14,9 +14,11 @@ Install ONLY `shakespeareanize.py` and run it using `python3 shakespeareanize.py
 ## Authors
 
 - [Nexachromic](https://github.com/Nexachromic)
+- [Verq](https://github.com/CordlessCoder) (Rust version)
 
 ## Contributors
 
 Say thanks to these fellas for contributing!
 
+- [Verq](https://github.com/CordlessCoder) Thanks for the Rust rewrite!
 - [AlexanderJCS](https://github.com/AlexanderJCS)
