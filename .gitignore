@@ -1,0 +1,6 @@
+/target
+test_large
+.mypy_cache
+**target**
+**/Cargo.lock
+**/result

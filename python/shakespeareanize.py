@@ -1,7 +1,8 @@
+#!/usr/bin/env python
 import json
 
 
-with open("conversions.json") as f:
+with open("../conversions.json") as f:
     CONVERSIONS = json.load(f)
 
 
@@ -13,7 +14,7 @@ def shakespeareanize(text):
         if word.isupper():
             shakespearean_text.append(CONVERSIONS.get(word.lower(), word))
 
-        elif word[-1] in [',', '.', '!', '?', ';', ':']:
+        elif word[-1] in [",", ".", "!", "?", ";", ":"]:
             punctuation = word[-1]
             word = word[:-1]
             shakespearean_text.append(CONVERSIONS.get(word.lower(), word) + punctuation)
@@ -21,12 +22,17 @@ def shakespeareanize(text):
         else:
             shakespearean_text.append(CONVERSIONS.get(word.lower(), word))
 
-    return ' '.join(shakespearean_text)
+    return " ".join(shakespearean_text)
 
 
 def main():
-    sentence = input("Enter a sentence:\n")
-    print(shakespeareanize(sentence))
+    file = input("what shall be the input file?")
+    with open(file, "r") as file:
+        text = file.read()
+    out = input("what shall be the input file?")
+    result = shakespeareanize(text)
+    with open(out, "w") as file:
+        file.write(result)
 
 
 if __name__ == "__main__":
