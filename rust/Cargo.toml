@@ -1,0 +1,16 @@
+[package]
+name = "shakespeareanize"
+version = "0.1.0"
+edition = "2021"
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = { version = "4.2.7", features = ["derive", "env", "color"] }
+serde = "1.0.163"
+serde_json = { version = "1.0.96", features = ["alloc"] }

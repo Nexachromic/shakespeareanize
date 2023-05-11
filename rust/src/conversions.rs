@@ -1,4 +1,4 @@
-{
+json!({
     "hello": "hail",
     "hey": "hail",
     "hi": "hail",
@@ -54,4 +54,4 @@
     "can": "canst",
     "could": "couldst",
     "would": "wouldst"
-}
+})
