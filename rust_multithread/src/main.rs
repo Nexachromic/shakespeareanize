@@ -120,8 +120,7 @@ fn main() -> io::Result<()> {
             };
             let thread_partition_upper = unsafe { input_map.get_unchecked(..end) };
             let thread = s.spawn(move || {
-                // TODO: backtrack to byte after the first terminator before partition
-
+                // backtrack to byte after the first terminator before partition
                 let backtrack = thread_partition_upper[..start]
                     .into_iter()
                     .rev()
@@ -156,7 +155,8 @@ fn main() -> io::Result<()> {
                         out.push(byte)
                     }
                 }
-                // Ignore word overflow if there's multiple threads as it'll be handled by the following thread
+                // Ignore word overflow unless we're the very last thread as otherwise, the
+                // overflow will be picked up by the following thread
                 if thread == lastthread {
                     let original_word = &thread_partition[start..];
                     let len = out.len();
