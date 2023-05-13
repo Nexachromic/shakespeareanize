@@ -126,7 +126,12 @@ fn main() -> io::Result<()> {
                     .rev()
                     .skip(end - start)
                     .position(|b| !b.is_ascii_alphabetic())
-                    .unwrap_or(if thread != lastthread { 0 } else { start });
+                    .unwrap_or(if thread != lastthread {
+                        0
+                    } else {
+                        // If there are no word separators before our thread's partition, and we're the last thread, input is a single word and we need to process all of it
+                        start
+                    });
                 let thread_partition = &thread_partition_upper[start - backtrack..];
 
                 let mut out = Vec::with_capacity(thread_partition.len());
