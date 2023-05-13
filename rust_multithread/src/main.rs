@@ -34,7 +34,7 @@ fn main() -> io::Result<()> {
                 .expect("Failed to create output file"),
         )
     } else {
-        Box::new(stdout().lock())
+        Box::new(stdout())
     };
     let input_file = File::open(input).expect("Failed to open input file");
     let input_map = unsafe {
@@ -55,12 +55,9 @@ fn main() -> io::Result<()> {
         let dictionary = &dictionary;
         let mut thread_list = Vec::with_capacity(threads);
         {
-            // First thread
             let thread_partition = unsafe { input_map.get_unchecked(0..per_thread) };
+            // First thread
             let thread = s.spawn(move || {
-                // println!("My work:");
-                // let _ = stdout().write_all(thread_partition);
-                // println!("\nEnd work");
                 let mut out = Vec::with_capacity(thread_partition.len());
                 let mut start = 0;
                 for (idx, &byte) in thread_partition.into_iter().enumerate() {
@@ -124,13 +121,18 @@ fn main() -> io::Result<()> {
                 let backtrack = thread_partition_upper[..start]
                     .into_iter()
                     .rev()
-                    .skip(end - start)
                     .position(|b| !b.is_ascii_alphabetic())
-                    .unwrap_or(if thread != lastthread {
-                        0
-                    } else {
-                        // If there are no word separators before our thread's partition, and we're the last thread, input is a single word and we need to process all of it
-                        start
+                    .unwrap_or_else(|| {
+                        if thread != lastthread
+                            // If our first char is a terminator, and no thread before us got a
+                            // terminator, we need to capture it
+                            && thread_partition_upper[start].is_ascii_alphabetic()
+                        {
+                            0
+                        } else {
+                            // If there are no word separators before our thread's partition, and we're the last thread, input is a single word and we need to process all of it
+                            start
+                        }
                     });
                 let thread_partition = &thread_partition_upper[start - backtrack..];
 
@@ -184,10 +186,12 @@ fn main() -> io::Result<()> {
             });
             thread_list.push(thread)
         }
+        let mut c: u32 = 0;
         for thread in thread_list {
             let finished = thread
                 .join()
                 .expect("Failed to join thread, something really went wrong!");
+            c += 1;
             output
                 .write_all(&finished)
                 .map_err(|err| {
