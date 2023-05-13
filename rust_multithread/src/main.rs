@@ -124,8 +124,9 @@ fn main() -> io::Result<()> {
                 let backtrack = thread_partition_upper[..start]
                     .into_iter()
                     .rev()
+                    .skip(end - start)
                     .position(|b| !b.is_ascii_alphabetic())
-                    .unwrap_or(0);
+                    .unwrap_or(if thread != lastthread { 0 } else { start });
                 let thread_partition = &thread_partition_upper[start - backtrack..];
 
                 let mut out = Vec::with_capacity(thread_partition.len());
