@@ -46,8 +46,8 @@ fn main() -> io::Result<()> {
             })
             .unwrap()
     };
-    const THRESHOLD: usize = 32 * 1024; // Minimum amount of work per-thread
-    let max_threads = (input_map.len() / THRESHOLD).max(1);
+    const MIN_WORK: usize = 64 * 1024; // Minimum amount of work per-thread
+    let max_threads = (input_map.len() / MIN_WORK).max(1);
     threads = threads.min(max_threads);
     let per_thread = input_map.len() / threads;
     thread::scope(|s| {
