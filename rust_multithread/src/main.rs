@@ -39,6 +39,7 @@ fn main() -> io::Result<()> {
     let input_file = File::open(input).expect("Failed to open input file");
     let input_map = unsafe {
         MmapOptions::new()
+            .populate()
             .map(&input_file)
             .map_err(|err| {
                 eprintln!("Failed to map input file!");
