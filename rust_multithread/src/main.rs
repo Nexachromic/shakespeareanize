@@ -50,6 +50,18 @@ fn main() -> io::Result<()> {
     let max_threads = (input_map.len() / MIN_WORK).max(1);
     threads = threads.min(max_threads);
     let per_thread = input_map.len() / threads;
+
+    // Getting min and max len of keys
+    #[cfg(feature = "bounds-opt")]
+    let mut min_len = usize::MAX;
+    #[cfg(feature = "bounds-opt")]
+    let mut max_len = 0;
+    #[cfg(feature = "bounds-opt")]
+    for key in dictionary.keys() {
+        let len = key.len();
+        min_len = min_len.min(len);
+        max_len = max_len.max(len);
+    }
     thread::scope(|s| {
         let dictionary = &dictionary;
         let mut thread_list = Vec::with_capacity(threads);
@@ -92,6 +104,14 @@ fn main() -> io::Result<()> {
                             let len = out.len();
                             // Add the word to the buffer, so we can convert it to lowercase
                             out.extend_from_slice(original_word);
+                            #[cfg(feature = "bounds-opt")]
+                            if !(original_word.len() <= max_len && out.len() >= min_len) {
+                                // If the word does not fit in the length bounds of the words in
+                                // the dictionary
+                                start = idx + 1;
+                                out.push(byte);
+                                continue;
+                            }
                             let word = &mut out[len..];
                             word.make_ascii_lowercase();
                             // Get the new word

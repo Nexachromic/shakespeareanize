@@ -15,3 +15,8 @@ memmap2 = { version = "0.6.1", features = ["stable_deref_trait"] }
 num_cpus = "1.15.0"
 serde = "1.0.163"
 serde_json = "1.0.96"
+
+
+[features]
+# Whether to try to optimize HashMap accesses by checking the length of each word against the minimum and maximum lengths of the keys
+bounds-opt = []
