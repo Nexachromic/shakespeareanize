@@ -46,11 +46,10 @@ fn main() -> io::Result<()> {
             })
             .unwrap()
     };
-    let mut per_thread = input_map.len() / threads;
-    if per_thread == 0 {
-        threads = 1;
-        per_thread = input_map.len();
-    }
+    const THRESHOLD: usize = 32 * 1024; // Minimum amount of work per-thread
+    let max_threads = (input_map.len() / THRESHOLD).max(1);
+    threads = threads.min(max_threads);
+    let per_thread = input_map.len() / threads;
     thread::scope(|s| {
         let dictionary = &dictionary;
         let mut thread_list = Vec::with_capacity(threads);
