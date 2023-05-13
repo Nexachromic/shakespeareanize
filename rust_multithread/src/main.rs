@@ -3,7 +3,7 @@ mod cli;
 
 use std::{
     fs::{File, OpenOptions},
-    io::{self, stdout, BufWriter, Write},
+    io::{self, stdout, Write},
     thread,
 };
 
@@ -34,7 +34,7 @@ fn main() -> io::Result<()> {
                 .expect("Failed to create output file"),
         )
     } else {
-        Box::new(BufWriter::with_capacity(16 * 1024, stdout().lock()))
+        Box::new(stdout().lock())
     };
     let input_file = File::open(input).expect("Failed to open input file");
     let input_map = unsafe {
