@@ -186,12 +186,10 @@ fn main() -> io::Result<()> {
             });
             thread_list.push(thread)
         }
-        let mut c: u32 = 0;
         for thread in thread_list {
             let finished = thread
                 .join()
                 .expect("Failed to join thread, something really went wrong!");
-            c += 1;
             output
                 .write_all(&finished)
                 .map_err(|err| {
