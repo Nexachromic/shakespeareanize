@@ -26,13 +26,9 @@ def shakespeareanize(text):
 
 
 def main():
-    file = input("what shall be the input file?")
-    with open(file, "r") as file:
-        text = file.read()
-    out = input("what shall be the input file?")
+    text = input("What do you want to shakespeareanize?\n> ")
     result = shakespeareanize(text)
-    with open(out, "w") as file:
-        file.write(result)
+    print(result)
 
 
 if __name__ == "__main__":
