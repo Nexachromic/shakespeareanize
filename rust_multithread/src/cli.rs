@@ -45,9 +45,6 @@ impl FromStr for Dictionary {
 
 #[derive(Debug, Parser)]
 pub struct Cli {
-    /// Where to read the text from
-    #[arg(short, long)]
-    pub input: PathBuf,
     /// Where to write the result to, defaults to stdout
     #[arg(short, long)]
     pub output: Option<PathBuf>,
@@ -57,4 +54,6 @@ pub struct Cli {
     /// The number of threads to use, defaults to the number of physical cores in the system
     #[arg(short, long, value_name = "THREADS", default_value_t = num_cpus::get_physical().try_into().unwrap_or(1.try_into().unwrap()))]
     pub threads: NonZeroUsize,
+    /// Where to read the text from
+    pub input: PathBuf,
 }
