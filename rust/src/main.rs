@@ -25,7 +25,7 @@ fn main() -> io::Result<()> {
     let output: Box<dyn Write> = if let Some(path) = output {
         Box::new(File::create(path)?)
     } else {
-        Box::new(stdout().lock())
+        Box::new(BufWriter::with_capacity(16 * 1024, stdout().lock()))
     };
     let mut output_writer = BufWriter::with_capacity(chunk * 2, output);
     let mut buf: Vec<u8> = Vec::with_capacity(chunk);
